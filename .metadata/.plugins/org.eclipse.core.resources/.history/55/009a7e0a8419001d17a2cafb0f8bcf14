@@ -1,0 +1,12 @@
+package StepDefinition;
+
+public class testSteps {
+	
+	@Given("^User is on Home Page$")
+	public void user_is_on_Home_Page() throws Throwable {
+		driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.get("http://www.bbc.co.uk/news");
+		}
+
+}

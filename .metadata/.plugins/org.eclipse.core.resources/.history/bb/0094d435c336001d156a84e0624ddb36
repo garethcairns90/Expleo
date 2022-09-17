@@ -1,0 +1,7 @@
+Feature: Nuffield Health
+  Description: The purpose of this feature is to test E2E integration for Nuffield Health
+
+  Scenario: User searches for gyms nearest them
+    Given user is on gyms page
+    When user enters a valid hometown "Colindale"
+    Then a list of gyms in that area are displayed

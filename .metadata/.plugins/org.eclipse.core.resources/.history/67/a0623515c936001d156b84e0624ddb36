@@ -1,0 +1,7 @@
+package constants;
+
+public class Config {
+
+	public static String landingPageUrl = "https://the-internet.herokuapp.com/challenging_dom";
+	public static String chromeDriverPath = "C:\\seleniumsoftwares\\chromedriver.exe";
+}

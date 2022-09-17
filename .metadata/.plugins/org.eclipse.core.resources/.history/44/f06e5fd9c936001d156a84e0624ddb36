@@ -1,0 +1,36 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class LandingPage {
+
+	WebDriver driver;
+	
+	By title = By.xpath("//*[@id=\"content\"]/div/h3");
+	By canvas = By.id("canvas");
+	
+	public LandingPage(WebDriver driver) {
+		this.driver = driver;
+	}
+	
+	public String getTitle() {
+		return this.driver.findElement(title).getText();
+	}
+	
+	public WebElement getCanvas() {
+		return this.driver.findElement(canvas);
+	}
+	
+	public void convertCanvasToPng() {
+		
+		JavascriptExecutor js = (JavascriptExecutor)this.driver;		
+		Object base64 = js.executeAsyncScript("return arguments[0].toDataURL('image/png').substring(21);", this.getCanvas());
+		System.out.print(base64);
+		
+		//# decode
+		//canvas_png = base64.b64decode(canvas_base64)
+	}
+}

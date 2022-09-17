@@ -1,0 +1,7 @@
+Feature: Nuffield Health
+  Description: The purpose of this feature is to test E2E integration for Nuffield Health
+
+  Scenario: User accesses landing page
+    Given user opens a web browser
+    When the user navigates to the landing page
+    Then the page title is visible

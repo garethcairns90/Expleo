@@ -1,0 +1,12 @@
+package constants;
+
+import org.openqa.selenium.By;
+
+public class Content {
+	
+	public static String landingPageTitle = "Challenging DOM";
+	public static String githubTitle = "saucelabs";
+	
+	
+
+}

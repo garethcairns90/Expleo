@@ -1,0 +1,300 @@
+package StepDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.Before;
+import io.cucumber.java.After;
+
+import pages.LandingPage;
+import constants.*;
+
+public class Steps 
+{
+	WebDriver driver;
+	LandingPage landingPage;
+	
+	@Before
+    public void setUp(){
+		System.setProperty("webdriver.chrome.driver",Config.chromeDriverPath);
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get(Config.landingPageUrl);
+		
+		landingPage = new LandingPage(driver);
+    }
+
+    @After
+    public void tearDown(){
+    	driver.close();
+    }
+	
+	
+	@Given("^user 1 opens a web browser$")
+	public void user_opens_a_web_browser() {
+		// Browser is opened in setup Function
+	}
+	
+	@When("the user navigates to the landing page")
+	public void the_user_navigates_to_the_landing_page() {
+		// Landing page is loaded in setup Function
+	}
+	
+	@Then("the page title content is correct")
+	public void the_page_title_content_is_correct() throws Throwable
+	{
+		Assert.assertTrue(this.landingPage.getTitle().contentEquals(Content.landingPageTitle));
+	}
+	
+	// end of scenario 1 ******************************************************************
+	
+	
+	
+	
+	@Given("^user 2 is on the landing page$")
+	public void user_is_on_the_landing_page_2() throws Throwable
+	{
+		// Landing page is loaded in setup Function
+	}
+	
+	
+	@When("the user clicks on the blue button")
+	public void the_user_clicks_on_the_blue_button() throws Throwable
+	{
+		String firstAnswer = this.landingPage.getCanvasOcrAnswer();
+		this.landingPage.firstAnswer = firstAnswer;
+		this.landingPage.clickBtn(landingPage.getBlueBtn());
+	}
+	
+	@Then("the answer value changes")
+	public void the_answer_value_changes() throws Throwable
+	{
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.canvas));
+		
+		String secondAnswer = this.landingPage.getCanvasOcrAnswer();		
+		Assert.assertFalse(this.landingPage.firstAnswer.contentEquals(secondAnswer));
+	}
+
+	// end of scenario 2 ******************************************************************
+	
+	
+	
+	
+	@Given("^user 3 is on the landing page$")
+	public void user_is_on_the_landing_page_3() {
+		// Browser is opened in setup Function
+	}
+	
+	@When("the table is displayed")
+	public void the_table_is_displayed() {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.table));
+	}
+	
+	@Then("Row 5 shows Iuvaret4 | Apeirian4 | Adipisci4 | Definiebas4 |	Consequuntur4 |	Phaedrum4")
+	public void row_data_assertion() throws Throwable
+	{
+		List<String> rowContent = this.landingPage.getTableEntireRowContent("5");
+		Assert.assertTrue(rowContent.get(0).contentEquals("Iuvaret4"));
+	}
+	
+	// end of scenario 3 ******************************************************************
+	
+	
+	
+	
+	@Given("^user 4 is on the landing page$")
+	public void user_is_on_the_landing_page_4() {
+		// Browser is opened in setup Function
+	}
+	
+	@When("the user clicks on the edit link")
+	public void the_user_clicks_on_the_edit_delete() throws Throwable {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.editLink));
+		this.landingPage.clickLink(landingPage.getEditLink());
+	}
+	
+	@Then("the URL updates to include edit")
+	public void the_URL_updates_to_include_edit() throws Throwable
+	{
+		Assert.assertTrue(this.landingPage.getURL().contentEquals(Config.editUrl));
+	}
+	
+	// end of scenario 4 ******************************************************************
+	
+	
+	
+	
+	@Given("^user 5 is on the landing page$")
+	public void user_is_on_the_landing_page_5() {
+		// Browser is opened in setup Function
+	}
+	
+	@When("the user clicks on the delete link")
+	public void the_user_clicks_on_the_delete_link() throws Throwable {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.deleteLink));
+		this.landingPage.clickLink(landingPage.getDeleteLink());
+	}
+	
+	@Then("the URL updates to include delete")
+	public void the_URL_updates_to_include_delete() throws Throwable
+	{
+		Assert.assertTrue(this.landingPage.getURL().contentEquals(Config.deleteUrl));
+	}
+	
+	// end of scenario 5 ******************************************************************
+	
+	
+	
+	
+	@Given("^user 6 is on the landing page$")
+	public void user_is_on_the_landing_page_6() {
+		// Browser is opened in setup Function
+	}
+	
+	@When("the user clicks on the image")
+	public void the_user_clicks_on_the_image() throws Throwable {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.image));
+		this.landingPage.clickLink(landingPage.getImage());
+	}
+	
+	@Then("the URL changes to github")
+	public void the_URL_changes_to_github() throws Throwable
+	{
+		Assert.assertTrue(this.landingPage.getURL().contentEquals(Config.gitHubURL));
+		
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.githubTitle));
+	}
+	
+	// end of scenario 6 ******************************************************************
+	
+	
+	
+	
+	@Given("^user 7 is on the landing page$")
+	public void user_is_on_the_landing_page_7() {
+		// Browser is opened in setup Function
+	}
+	
+	@When("the user clicks on the Elemental Selenium link")
+	public void the_user_clicks_on_the_Elemental_Selenium_link() throws Throwable {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.elementalSeleniumLink));
+		this.landingPage.clickLink(landingPage.getElementalSeleniumLink());
+	}
+	
+	@Then("a new tab opens")
+	public void a_new_tab_opens() throws Throwable
+	{
+		String parentID = driver.getWindowHandle();
+		ArrayList<String> tabs2 = new ArrayList<String> (driver.getWindowHandles());
+		
+		if (parentID.equals(tabs2.get(0))) {
+			driver.switchTo().window(tabs2.get(1));
+		}
+		
+		else {
+			driver.switchTo().window(tabs2.get(0));
+		}
+		
+		Assert.assertTrue(this.landingPage.getURL().contentEquals(Config.elementalSeleniumURL));
+		
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.elementalSeleniumPageTitle));
+	}
+	
+	// end of scenario 7 ******************************************************************
+	
+	
+	@Given("^user 8 is on the landing page$")
+	public void user_is_on_the_landing_page_8() {
+		// Browser is opened in setup Function
+	}
+	
+	@When("the user searches for the word 'Adipisci7'")
+	public void the_user_searches_for_word() throws Throwable {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.table));
+	}
+	
+	@Then("the content exists on the table")
+	public void content_exists_table() throws Throwable
+	{		
+		boolean found = this.landingPage.searchTableContent("Adipisci7");
+		Assert.assertTrue(found);
+	}
+	
+	// end of scenario 8 ******************************************************************
+
+	
+	@Given("^user 9 is on the landing page$")
+	public void user_is_on_the_landing_page_9() {
+		// Browser is opened in setup Function
+	}
+	
+	@When("the user clicks on the red button")
+	public void the_user_clicks_on_the_red_button() throws Throwable {
+	
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.redBtn));
+		
+		WebElement redBtn = landingPage.getRedBtn();
+		this.landingPage.redButtonId = redBtn.getAttribute("id");
+		this.landingPage.clickBtn(redBtn);
+	}
+	
+	@Then("the page refreshes")
+	public void the_page_refreshes() throws Throwable
+	{	
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.redBtn));
+		
+		// element id changes whenever the page is refreshed
+		Assert.assertFalse(this.landingPage.redButtonId.contentEquals(landingPage.getRedBtn().getAttribute("id")));
+	}
+	
+	// end of scenario 9 ******************************************************************  
+
+	@Given("^user 10 is on the landing page$")
+	public void user_is_on_the_landing_page_10() {
+		// Browser is opened in setup Function
+	}
+	
+	@When("the user clicks on the green button")
+	public void the_user_clicks_on_the_green_button() throws Throwable {
+	
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.greenBtn));
+		
+		WebElement greenBtn = landingPage.getRedBtn();
+		this.landingPage.redButtonId = greenBtn.getAttribute("id");
+		this.landingPage.clickBtn(greenBtn);
+	}
+	
+	@Then("the page is refreshed")
+	public void the_page_refreshes_2() throws Throwable
+	{	
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(landingPage.greenBtn));
+		
+		// element id changes whenever the page is refreshed
+		Assert.assertFalse(this.landingPage.greenButtonId.contentEquals(landingPage.getGreenBtn().getAttribute("id")));
+	}
+	
+	// end of scenario 10 ******************************************************************  
+}

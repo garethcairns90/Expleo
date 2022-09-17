@@ -1,0 +1,61 @@
+package StepDefinition;
+
+import java.util.List;
+
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.Before;
+import io.cucumber.java.After;
+
+import pages.LandingPage;
+import constants.*;
+
+public class Steps 
+{
+	WebDriver driver;
+	LandingPage landingPage;
+	
+	@Before
+    public void setUp(){
+		System.setProperty("webdriver.chrome.driver",Config.chromeDriverPath);
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get(Config.landingPageUrl);
+		
+		landingPage = new LandingPage(driver);
+    }
+
+    @After
+    public void tearDown(){
+       driver.close();
+    }
+	
+	
+	@Given("^user opens a web browser$")
+	@When("the user navigates to the landing page")
+	@Then("the page title content is correct")
+	public void the_page_title_content_is_correct() throws Throwable
+	{
+		Assert.assertTrue(this.landingPage.getTitle().contentEquals(Content.landingPageTitle));
+	}
+	
+	@Given("^user is on the landing page$")
+	@When("the user clicks on the blue button")
+	@Then("the answer value changes")
+	public void the_answer_value_changes() throws Throwable
+	{
+		
+	}
+
+
+}

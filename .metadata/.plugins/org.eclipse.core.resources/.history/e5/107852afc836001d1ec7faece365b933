@@ -1,0 +1,134 @@
+package pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import constants.Config;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+
+import net.sourceforge.tess4j.*;
+
+public class LandingPage {
+
+	WebDriver driver;
+	public String firstAnswer;
+	
+	By title = By.xpath("//*[@id=\"content\"]/div/h3");
+	
+	public By canvas = By.id("canvas");
+	
+	public By table = By.xpath("//*[@id=\"content\"]/div/div/div/div[2]/table");
+	
+	By blueBtn = By.className("button");
+	By redBtn = By.className("button alert");
+	By greenBtn = By.className("button success");
+	
+	// gareth
+	By editLink = By.className("need to get xpath");
+	By deleteLink = By.className("need to get xpath");
+	
+	
+	public LandingPage(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public String getTableColumnRowContent(String column, String row) {
+		String xPath = "//*[@id=\"content\"]/div/div/div/div[2]/table/tbody/tr[" + row + "]/td[" + column + "]";
+		return this.driver.findElement(By.xpath(xPath)).getText();
+	}
+	
+	public List<String> getTableEntireRowContent(String row) {
+		
+		 List<String> rowData = new ArrayList<String>();
+		
+		// 6 columns
+		
+		for(int i=1; i<=6; i++) {
+			String data = this.getTableColumnRowContent(String.valueOf(i), row);
+			rowData.add(data);
+		}
+		
+		return rowData;
+	}
+	
+	public String getTitle() {
+		return this.driver.findElement(title).getText();
+	}
+	
+	public WebElement getBlueBtn() {
+		return this.driver.findElement(blueBtn);
+	}
+	
+	// gareth
+	public WebElement getEditLink() {
+		return this.driver.findElement(editLink);
+	}
+	
+	// gareth
+	public WebElement getDeleteLink() {
+		return this.driver.findElement(deleteLink);
+	}
+	
+	// gareth
+	public void clickBtn(WebElement btn) {
+		btn.click();
+	}
+	
+	// gareth
+	public void clickLink(WebElement link) {
+		link.click();
+	}
+	
+	public WebElement getCanvas() {
+		return this.driver.findElement(canvas);
+	}
+	
+	public String getCanvasOcrAnswer() throws IOException, InterruptedException {
+		
+		// get canvas by id then executes javascript to get base64 string
+		JavascriptExecutor js = (JavascriptExecutor)this.driver;		
+		String base64Canvas = js.executeScript("return arguments[0].toDataURL('image/png').substring(22);", this.getCanvas()).toString();
+		
+		// convert base64 into byte array
+		byte[] decodeBytes = Base64.getDecoder().decode(base64Canvas.getBytes());
+		ByteArrayInputStream bis = new ByteArrayInputStream(decodeBytes);
+		
+		// creates buffered image
+		BufferedImage image = ImageIO.read(bis);
+		bis.close();
+
+		// write the image to a file
+		File outputfile = new File(Config.testResourcesDataPath, "img.png");
+		ImageIO.write(image, "png", outputfile);
+		
+		// use tesseract library for OCR
+        ITesseract instance = new Tesseract(); 
+        instance.setDatapath(new File(Config.datapath).getPath());
+
+        String answer;
+        
+        try {
+            String result = instance.doOCR(outputfile);
+            answer = result.split("\\s+")[1];
+            
+        } catch (TesseractException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+		
+        return answer;
+	}
+	
+	
+}

@@ -1,0 +1,10 @@
+package constants;
+
+
+public class Content {
+	
+	public static String landingPageTitle = "Challenging DOM";
+	public static String githubPageTitle = "saucelabs";
+	public static String elementalSeleniumPageTitle = "Elemental Selenium";
+	
+}

@@ -1,0 +1,67 @@
+package StepDefinition;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
+
+public class Steps 
+{
+	WebDriver driver;
+	String hometown;
+	
+	@Given("^user is on gyms page$")
+	public void user_is_on_Gyms_Page() throws Throwable
+	{
+		System.setProperty("webdriver.chrome.driver","C:\\seleniumsoftwares\\chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.get("https://www.nuffieldhealth.com/gyms");
+	}
+
+	@When("^user enters a valid hometown \"([^\"]*)\"$")
+	public void user_enters_valid_hometown(String args1) throws Throwable  
+	{
+		WebElement searchBox = driver.findElement(By.id("location-finder__input-00000160-4eeb-de17-a579-dffb7ab70000"));
+		hometown = args1;
+		searchBox.sendKeys(args1);
+		
+		// Search uses Google API, we need to wait until it finishes the API call before hitting enter
+		Thread.sleep(3000);
+		
+		searchBox.sendKeys(Keys.RETURN);
+	}	
+	
+	@Then("^a list of gyms in that area are displayed$")
+	public void a_list_of_gyms_in_that_area_are_displayed() throws Throwable
+	{
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("js-location-name")));
+		
+		List<WebElement> searchResults = driver.findElements(By.className("js-location-name"));
+		
+		// Excludes virtual gym 
+	    System.out.println("Search results for " + hometown + ": " + String.valueOf(searchResults.size() - 1) + "\n");
+
+		searchResults.forEach(webElement -> {
+			
+			String location = webElement.getAttribute("innerHTML");
+			
+			// Excludes virtual gym from console output
+			if(!location.equals("24/7 Virtual Gym Membership")) {
+				System.out.println(location);
+			}
+		});   
+	    
+		driver.close();
+	}	
+}

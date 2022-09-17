@@ -1,0 +1,9 @@
+Feature: Expleo Challenging DOM
+  Description: The purpose of this feature is to test E2E integration for Expleo Challenging DOM
+
+  
+    
+  Scenario: Verify Elemental Selenium link can be clicked
+  	Given user 7 is on the landing page
+    When the user clicks on the Elemental Selenium link
+    Then a new tab opens
