@@ -104,10 +104,12 @@ public class LandingPage {
 		btn.click();
 	}
 	
+	// gareth
 	public WebElement getEditLink() {
 		return this.driver.findElement(editLink);
 	}
 	
+	// gareth
 	public WebElement getDeleteLink() {
 		return this.driver.findElement(deleteLink);
 	}
