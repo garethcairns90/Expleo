@@ -22,10 +22,8 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Install Google Chrome 
-      run: |
-              chmod +x ./scripts/InstallChrome.sh
-                          ./scripts/InstallChrome.sh 
+    - name: setup-chromedriver
+      uses: nanasess/setup-chromedriver@v1.0.8
     - name: Build with Maven
       working-directory: ./mavenproject
       run: mvn -B package --file pom.xml
