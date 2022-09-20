@@ -28,4 +28,6 @@ jobs:
       working-directory: ./mavenproject
       env:
           LD_LIBRARY_PATH: /usr/local/lib
-      run: mvn -B package --file pom.xml
+      run: | 
+        sudo ldconfig 
+        mvn -B package --file pom.xml
