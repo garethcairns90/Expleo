@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -27,7 +28,13 @@ public class Steps
 	@Before
     public void setUp(){
 		System.setProperty("webdriver.chrome.driver",Config.chromeDriverPath);
-		driver = new ChromeDriver();
+	    
+	    	ChromeOptions options = new ChromeOptions();
+ 		options.addArguments("--no-sandbox");
+ 		options.addArguments("--disable-dev-shm-usage");
+ 		options.addArguments("--headless");
+	    
+		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
 		driver.get(Config.landingPageUrl);
 		
